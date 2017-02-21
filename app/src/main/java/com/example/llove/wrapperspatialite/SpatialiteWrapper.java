@@ -98,7 +98,16 @@ public class SpatialiteWrapper extends ReactContextBaseJavaModule {
     public void closeConnection(ReadableMap args, Callback success, Callback error) {
         try {
             db.close();
-            success.invoke();
+            success.invoke(db.isOpen());
+        } catch (RuntimeException re) {
+            error.invoke(re.getMessage());
+        }
+    }
+
+    @ReactMethod
+    public void isModuleWorking(ReadableMap args, Callback success, Callback error) {
+        try {
+            success.invoke("Native module working");
         } catch (RuntimeException re) {
             error.invoke(re.getMessage());
         }
